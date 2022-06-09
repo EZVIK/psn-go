@@ -1,7 +1,7 @@
 package trophy
 
 import (
-	auth "github.com/EZVIK/psn-go/authenticate"
+	"github.com/EZVIK/psn-go/authenticate"
 	"testing"
 )
 
@@ -10,13 +10,13 @@ var cid = `NPWR22859_00`
 
 func Test_GetTrophyGameList(t *testing.T) {
 
-	code, err := auth.ExchangeForCode(auth.NPSSO)
+	code, err := authenticate.ExchangeForCode(authenticate.NPSSO)
 	if err != nil {
 		t.Errorf("ExchangeForCode error: %v", err)
 		return
 	}
 	//
-	access, _, err := auth.ExchangeForAuthToken(code)
+	access, _, err := authenticate.ExchangeForAuthToken(code)
 	if err != nil {
 		t.Errorf("ExchangeForAuthToken error: %v", err)
 		return
@@ -37,13 +37,13 @@ func Test_GetTrophyGameList(t *testing.T) {
 
 func Test_GetPlayTrophyStatus(t *testing.T) {
 
-	code, err := auth.ExchangeForCode(auth.NPSSO)
+	code, err := authenticate.ExchangeForCode(authenticate.NPSSO)
 	if err != nil {
 		t.Errorf("ExchangeForCode error: %v", err)
 		return
 	}
 	//
-	access, _, err := auth.ExchangeForAuthToken(code)
+	access, _, err := authenticate.ExchangeForAuthToken(code)
 	if err != nil {
 		t.Errorf("ExchangeForAuthToken error: %v", err)
 		return
@@ -78,13 +78,13 @@ func Test_GetGamesTrophies(t *testing.T) {
 }
 
 func Test_AggregatePlayerTopTrophies(t *testing.T) {
-	code, err := auth.ExchangeForCode(auth.NPSSO)
+	code, err := authenticate.ExchangeForCode(authenticate.NPSSO)
 	if err != nil {
 		t.Errorf("ExchangeForCode error: %v", err)
 		return
 	}
 	//
-	access, _, err := auth.ExchangeForAuthToken(code)
+	access, _, err := authenticate.ExchangeForAuthToken(code)
 	if err != nil {
 		t.Errorf("ExchangeForAuthToken error: %v", err)
 		return

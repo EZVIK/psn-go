@@ -2,7 +2,7 @@ package authenticate
 
 import (
 	"fmt"
-	psn_go "github.com/EZVIK/psn-go"
+	"github.com/EZVIK/psn-go"
 	"github.com/gorilla/schema"
 	"io/ioutil"
 	"net/http"
