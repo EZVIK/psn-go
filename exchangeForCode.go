@@ -1,8 +1,8 @@
-package authenticate
+package main
 
 import (
+	"errors"
 	"fmt"
-	"github.com/EZVIK/psn-go"
 	"github.com/gorilla/schema"
 	"io/ioutil"
 	"net/http"
@@ -49,7 +49,7 @@ func ExchangeForCode(npsso string) (code string, err error) {
 
 	location := res.Header.Get("Location")
 	if !strings.Contains(location, "redirect/?") {
-		return "", psn_go.ErrNPSSO
+		return "", errors.New("invalid npsso code")
 	}
 	respInfo := strings.Split(location, "redirect/?")[1]
 

@@ -1,4 +1,4 @@
-package trophy
+package main
 
 import "time"
 

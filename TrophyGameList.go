@@ -1,8 +1,7 @@
-package trophy
+package main
 
 import (
 	"encoding/json"
-	"github.com/EZVIK/psn-go/authenticate"
 	"github.com/go-resty/resty/v2"
 )
 
@@ -13,7 +12,7 @@ func GetTrophyGameList(accessToken string) (p []PlayerGameTrophyInfo, err error)
 
 	url := TROPHY_USER_URL + "/users/me/trophyTitles"
 
-	authorization := authenticate.AUTHORIZATION_BEARER + accessToken
+	authorization := AUTHORIZATION_BEARER + accessToken
 
 	client := resty.New()
 
@@ -45,7 +44,7 @@ func GetPlayTrophyStatus(accessToken string, npCommunicationId string, ifPs5 boo
 
 	url := TROPHY_USER_URL + "/users/me/npCommunicationIds/" + npCommunicationId + "/trophyGroups/all/trophies" + np
 
-	authorization := authenticate.AUTHORIZATION_BEARER + accessToken
+	authorization := AUTHORIZATION_BEARER + accessToken
 
 	client := resty.New()
 
@@ -74,7 +73,7 @@ func GetGamesTrophies(accessToken string, npCommunicationIds string, ifPs5 bool)
 	}
 	url := TROPHY_USER_URL + "/npCommunicationIds/" + npCommunicationIds + "/trophyGroups/all/trophies" + np
 
-	authorization := authenticate.AUTHORIZATION_BEARER + accessToken
+	authorization := AUTHORIZATION_BEARER + accessToken
 
 	client := resty.New()
 
