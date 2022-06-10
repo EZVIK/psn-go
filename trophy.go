@@ -1,4 +1,4 @@
-package main
+package psn_go
 
 import (
 	"encoding/json"

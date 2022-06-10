@@ -1,6 +1,21 @@
-package main
+package psn_go
 
 import "time"
+
+type AuthTokensResponse struct {
+	AccessToken           string `json:"access_token"`
+	TokenType             string `json:"token_type"`
+	ExpiresIn             int    `json:"expires_in"`
+	Scope                 string `json:"scope"`
+	IDToken               string `json:"id_token"`
+	RefreshToken          string `json:"refresh_token"`
+	RefreshTokenExpiresIn int    `json:"refresh_token_expires_in"`
+}
+
+type CodeResponse struct {
+	Code string `schema:"code"`
+	Cid  string `schema:"cid"`
+}
 
 // PlayerGameTrophyInfo
 // struct of the latest trophies' player recently achieved
