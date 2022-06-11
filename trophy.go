@@ -5,14 +5,12 @@ import (
 	"github.com/go-resty/resty/v2"
 )
 
-const TROPHY_USER_URL = `https://m.np.playstation.net/api/trophy/v1`
-
 // GetTrophyGameList List of all recently played games
 func GetTrophyGameList(accessToken string) (p []PlayerGameTrophyInfo, err error) {
 
-	url := TROPHY_USER_URL + "/users/me/trophyTitles"
+	url := trophy_user_url + "/users/me/trophyTitles"
 
-	authorization := AUTHORIZATION_BEARER + accessToken
+	authorization := authorization_bearer + accessToken
 
 	client := resty.New()
 
@@ -42,9 +40,9 @@ func GetPlayTrophyStatus(accessToken string, npCommunicationId string, ifPs5 boo
 		np = "?npServiceName=trophy"
 	}
 
-	url := TROPHY_USER_URL + "/users/me/npCommunicationIds/" + npCommunicationId + "/trophyGroups/all/trophies" + np
+	url := trophy_user_url + "/users/me/npCommunicationIds/" + npCommunicationId + "/trophyGroups/all/trophies" + np
 
-	authorization := AUTHORIZATION_BEARER + accessToken
+	authorization := authorization_bearer + accessToken
 
 	client := resty.New()
 
@@ -71,9 +69,9 @@ func GetGamesTrophies(accessToken string, npCommunicationIds string, ifPs5 bool)
 	if !ifPs5 {
 		np = "?npServiceName=trophy"
 	}
-	url := TROPHY_USER_URL + "/npCommunicationIds/" + npCommunicationIds + "/trophyGroups/all/trophies" + np
+	url := trophy_user_url + "/npCommunicationIds/" + npCommunicationIds + "/trophyGroups/all/trophies" + np
 
-	authorization := AUTHORIZATION_BEARER + accessToken
+	authorization := authorization_bearer + accessToken
 
 	client := resty.New()
 

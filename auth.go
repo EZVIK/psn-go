@@ -8,28 +8,28 @@ import (
 	"github.com/gorilla/schema"
 	"io/ioutil"
 	"net/http"
-	urlx "net/url"
+	"net/url"
 	"strings"
 )
 
 const (
-	NPSSO = ``
+	auth_base_url = `https://ca.account.sony.com/api/authz/v3/oauth`
 
-	AUTH_BASE_URL = `https://ca.account.sony.com/api/authz/v3/oauth`
+	redirect_uri = `com.playstation.PlayStationApp://redirect`
 
-	REDIRECT_URI = `com.playstation.PlayStationApp://redirect`
+	authorization = `YWM4ZDE2MWEtZDk2Ni00NzI4LWIwZWEtZmZlYzIyZjY5ZWRjOkRFaXhFcVhYQ2RYZHdqMHY`
 
-	AUTHORIZATION = `YWM4ZDE2MWEtZDk2Ni00NzI4LWIwZWEtZmZlYzIyZjY5ZWRjOkRFaXhFcVhYQ2RYZHdqMHY`
+	authorization_bearer = `bearer `
 
-	AUTHORIZATION_BEARER = `bearer `
+	authorization_basic = `Basic `
 
-	AUTHORIZATION_BASIC = `Basic `
+	trophy_user_url = `https://m.np.playstation.net/api/trophy/v1`
 )
 
-func ExchangeForAuthToken(code string) (Access string, Refresh string, err error) {
+func exchangeForAuthToken(code string) (Access string, Refresh string, err error) {
 
-	url := AUTH_BASE_URL + "/token"
-	authorization := AUTHORIZATION_BASIC + AUTHORIZATION
+	reqUrl := auth_base_url + "/token"
+	authorization := authorization_basic + authorization
 
 	client := resty.New()
 
@@ -39,11 +39,11 @@ func ExchangeForAuthToken(code string) (Access string, Refresh string, err error
 		SetHeader("Content-Type", "application/x-www-form-urlencoded").
 		SetFormData(map[string]string{
 			"code":         code,
-			"redirect_uri": REDIRECT_URI,
+			"redirect_uri": redirect_uri,
 			"grant_type":   "authorization_code",
 			"token_format": "jwt",
 		}).
-		Post(url)
+		Post(reqUrl)
 
 	if err != nil {
 		return
@@ -57,10 +57,10 @@ func ExchangeForAuthToken(code string) (Access string, Refresh string, err error
 	return authToken.AccessToken, authToken.RefreshToken, nil
 }
 
-func ExchangeForCode(npsso string) (code string, err error) {
+func exchangeForCode(npsso string) (code string, err error) {
 
 	//requestUrl := fmt.Sprintf("%s/authorize?%s", AUTH_BASE_URL, "access_type=offline&client_id=ac8d161a-d966-4728-b0ea-ffec22f69edc&redirect_uri=com.playstation.PlayStationApp://redirect&response_type=code&scope=psn:mobile.v1 psn:clientapp")
-	url := "https://ca.account.sony.com/api/authz/v3/oauth/authorize?access_type=offline&client_id=ac8d161a-d966-4728-b0ea-ffec22f69edc&redirect_uri=com.playstation.PlayStationApp%3A%2F%2Fredirect&response_type=code&scope=psn%3Amobile.v1%20psn%3Aclientapp"
+	reqUrl := "https://ca.account.sony.com/api/authz/v3/oauth/authorize?access_type=offline&client_id=ac8d161a-d966-4728-b0ea-ffec22f69edc&redirect_uri=com.playstation.PlayStationApp%3A%2F%2Fredirect&response_type=code&scope=psn%3Amobile.v1%20psn%3Aclientapp"
 
 	//url := requestUrl
 	method := "GET"
@@ -71,7 +71,7 @@ func ExchangeForCode(npsso string) (code string, err error) {
 			return http.ErrUseLastResponse
 		},
 	}
-	req, err := http.NewRequest(method, url, nil)
+	req, err := http.NewRequest(method, reqUrl, nil)
 
 	if err != nil {
 		return
@@ -99,7 +99,7 @@ func ExchangeForCode(npsso string) (code string, err error) {
 
 	CodeInfo := new(CodeResponse)
 
-	v, err := urlx.ParseQuery(respInfo)
+	v, err := url.ParseQuery(respInfo)
 	if err != nil {
 		return "", err
 	}
@@ -109,4 +109,19 @@ func ExchangeForCode(npsso string) (code string, err error) {
 	}
 
 	return CodeInfo.Code, nil
+}
+
+func Login(npsso string) (Access string, Refresh string, err error) {
+
+	code, err := exchangeForCode(npsso)
+	if err != nil {
+		return
+	}
+
+	Access, Refresh, err = exchangeForAuthToken(code)
+	if err != nil {
+		return
+	}
+
+	return
 }
